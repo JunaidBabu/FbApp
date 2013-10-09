@@ -1,79 +1,132 @@
-<!DOCTYPE html>
 <html>
+<head>
+<title>Open Graph Getting Started App - og.likes</title>
+<style type="text/css">
+div { padding: 10px; }
+</style>
+<meta charset="UTF-8">
+</head>
+<body>
+<div id="fb-root"></div>
+<script type="text/javascript">
+  // You probably don't want to use globals, but this is just example code
+  var fbAppId = '410442089053504';
+  var objectToLike = 'http://techcrunch.com/2013/02/06/facebook-launches-developers-live-video-channel-to-keep-its-developer-ecosystem-up-to-date/';
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Fbapp : Facebook App Tests" />
+  // This check is just here to make sure you set your app ID. You don't
+  // need to use it in production. 
+  if (fbAppId === 'replace me') {
+    alert('Please set the fbAppId in the sample.');
+  }
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+  // This is boilerplate code that is used to initialize the Facebook
+  // JS SDK.  You would normally set your App ID in this code.
 
-    <title>Fbapp</title>
-  </head>
+  // Additional JS functions here
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : fbAppId,        // App ID
+      status     : true,           // check login status
+      cookie     : true,           // enable cookies to allow the server to access the session
+      xfbml      : true            // parse page for xfbml or html5 social plugins like login button below
+    });
 
-  <body>
+    // Put additional init code here
+  };
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/JunaidBabu/FbApp">View on GitHub</a>
+  // Load the SDK Asynchronously
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
 
-          <h1 id="project_title">Fbapp</h1>
-          <h2 id="project_tagline">Facebook App Tests</h2>
+  /*
+   * This function makes a call to the og.likes API.  The object argument is
+   * the object you like.  Other types of APIs may take other arguments.
+   * (i.e. the book.reads API takes a book= argument.)
+   *
+   * Because it's a sample, it also sets the privacy parameter so that it will
+   * create a story that only you can see.  Remove the privacy parameter and
+   * the story will be visible to whatever the default privacy was when you
+   * added the app.
+   *
+   * Also note that you can view any story with the id, as demonstrated with
+   * the code below.
+   *
+   * APIs used in postLike():
+   * Call the Graph API from JS:
+   *   https://developers.facebook.com/docs/reference/javascript/FB.api
+   * The Open Graph og.likes API:
+   *   https://developers.facebook.com/docs/reference/opengraph/action-type/og.likes
+   * Privacy argument:
+   *   https://developers.facebook.com/docs/reference/api/privacy-parameter
+   */
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/JunaidBabu/FbApp/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/JunaidBabu/FbApp/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
+  function postLike() {
+    FB.api(
+        '/me/feed',
+        'post',
+        { message: 'http://bloodlinelabs.com/' },
+        function(response) {
+          console.log(response);
+           if (!response || response.error) {
+              alert('Error occured');
+           } else {
+              alert('Cook was successful! Action ID: ' + response.id);
+           }
+       });
+//     FB.ui(
+//   {
+//    method: 'feed',
+//    name: 'The Facebook SDK for Javascript',
+//    caption: 'Bringing Facebook to the desktop and mobile web',
+//    description: (
+//       'A small JavaScript library that allows you to harness ' +
+//       'the power of Facebook, bringing the user\'s identity, ' +
+//       'social graph and distribution power to your site.'
+//    ),
+//    link: 'https://developers.facebook.com/docs/reference/javascript/',
+//    picture: 'http://www.fbrell.com/public/f8.jpg'
+//   },
+//   function(response) {
+//     if (response && response.post_id) {
+//       alert('Post was published.');
+//     } else {
+//       alert('Post was not published.');
+//     }
+//   }
+// );
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+  }
+</script>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<!--
+  Login Button - https://developers.facebook.com/docs/reference/plugins/login
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+  This example needs the 'publish_actions' permission in order to publish an
+  action.  The scope parameter below is what prompts the user for that permission.
+-->
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<div
+  class="fb-login-button"
+  data-show-faces="true"
+  data-width="200"
+  data-max-rows="1"
+  data-scope="publish_actions">
+</div>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<div>
+This example creates a story on Facebook using the <a href="https://developers.facebook.com/docs/reference/ogaction/og.likes"><code>og.likes</code></a> API.  That story will just say that you like an <a href="http://techcrunch.com/2013/02/06/facebook-launches-developers-live-video-channel-to-keep-its-developer-ecosystem-up-to-date/">article on TechCrunch</a>.  The story should only be visible to you.
+</div>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<div>
+<input type="button" value="Create a story with an og.likes action" onclick="postLike();">
+</div>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<div id="result"></div>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Fbapp maintained by <a href="https://github.com/JunaidBabu">JunaidBabu</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
-  </body>
+</body>
 </html>

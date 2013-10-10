@@ -1,6 +1,7 @@
 <html>
 <head>
 <title>Open Graph Tests</title>
+<meta property="og:type" content="destiny_awaits:Website" /> 
 <style type="text/css">
 div { padding: 10px; }
 </style>
@@ -45,18 +46,24 @@ div { padding: 10px; }
 
   function postLike() {
     FB.api(
-        '/me/feed',
-        'post',
-        { message: 'http://bloodlinelabs.com/' ,
+       'https://graph.facebook.com/me/destiny_awaits:joined',
+       //'post',
+       {"action.type":["destiny_awaits:joined"], "application":[410442089053504]},
+       { object: "http://bloodlinelabs.com",
          privacy: {'value': 'SELF'} },
-        function(response) {
-          console.log(response);
-           if (!response || response.error) {
-              alert('Error occured');
-           } else {
-              alert('Cook was successful! Action ID: ' + response.id);
-           }
-       });
+       function(response) {
+        console.log(response);
+         if (!response) {
+           alert('Error occurred.');
+         } else if (response.error) {
+           document.getElementById('result').innerHTML = 'Error: ' + response.error.message;
+         } else {
+           document.getElementById('result').innerHTML =
+             '<a href=\"https://www.facebook.com/me/activity/' + response.id + '\">' +
+             'Story created.  ID is ' + response.id + '</a>';
+         }
+       }
+    );
 
 
   }

@@ -1,7 +1,8 @@
 <html>
 <head>
 <title>Open Graph Tests</title>
-<meta property="og:type" content="destiny_awaits:Website" /> 
+<meta property="fb:app_id"          content="410442089053504" /> 
+<meta property="og:type" content="destiny_awaits:website">
 <style type="text/css">
 div { padding: 10px; }
 </style>
@@ -45,14 +46,32 @@ div { padding: 10px; }
 
 
   function postLike() {
-    FB.api(
+    // FB.api(
+    //    'https://graph.facebook.com/me/destiny_awaits:joined',
+    //    //'post',
+    //    {"action.type":["destiny_awaits:joined"], "application":[410442089053504]},
+    //    { Website: "http://localhost/Bloodline/FbApp/",
+    //      privacy: {'value': 'SELF'} },
+    //    function(response) {
+    //     console.log(response);
+    //      if (!response) {
+    //        alert('Error occurred.');
+    //      } else if (response.error) {
+    //        document.getElementById('result').innerHTML = 'Error: ' + response.error.message;
+    //      } else {
+    //        document.getElementById('result').innerHTML =
+    //          '<a href=\"https://www.facebook.com/me/activity/' + response.id + '\">' +
+    //          'Story created.  ID is ' + response.id + '</a>';
+    //      }
+    //    }
+    // );
+objectToLike="http://localhost/Bloodline/FbApp/";
+ FB.api(
        'https://graph.facebook.com/me/destiny_awaits:joined',
-       //'post',
-       {"action.type":["destiny_awaits:joined"], "application":[410442089053504]},
-       { object: "http://bloodlinelabs.com",
+       'post',
+       { website: objectToLike,
          privacy: {'value': 'SELF'} },
        function(response) {
-        console.log(response);
          if (!response) {
            alert('Error occurred.');
          } else if (response.error) {
@@ -64,7 +83,6 @@ div { padding: 10px; }
          }
        }
     );
-
 
   }
 </script>
